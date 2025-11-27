@@ -1,0 +1,56 @@
+{% extends 'base.html' %} {% block content %}
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+  <div class="lg:col-span-2">
+    <div class="bg-white p-4 rounded shadow">
+      <h2 class="text-xl font-semibold mb-4">Top Stories</h2>
+      <div class="divide-y">
+        {% for a in articles %}
+        <article class="py-4">
+          <a
+            href="{% url 'article_detail' a.pk %}"
+            class="text-lg font-medium hover:text-indigo-600"
+            >{{ a.title }}</a
+          >
+          <p class="text-sm text-gray-600 mt-1">
+            {{ a.summary|default:a.content|truncatechars:180 }}
+          </p>
+          <div class="text-xs text-gray-400 mt-2">
+            {{ a.created_at|date:'M d, Y H:i' }}
+          </div>
+        </article>
+        {% empty %}
+        <p>No articles yet. Use the admin site to add some.</p>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  <aside class="lg:col-span-1">
+    <div class="bg-white p-4 rounded shadow mb-4">
+      <h3 class="font-semibold mb-2">Latest Updates</h3>
+      <div class="ticker-wrap bg-gray-50 p-2 rounded">
+        <div id="ticker" class="ticker">
+          {% for t in ticker_items %}
+          <span class="inline-block mr-8"
+            >{{ t.created_at|date:'d M H:i' }} —
+            <a href="{% url 'article_detail' t.pk %}" class="underline"
+              >{{ t.title }}</a
+            ></span
+          >
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-white p-4 rounded shadow">
+      <h4 class="font-semibold mb-2">Categories</h4>
+      <ul class="text-sm text-gray-700 space-y-2">
+        <li><a href="#" class="hover:text-indigo-600">World</a></li>
+        <li><a href="#" class="hover:text-indigo-600">Business</a></li>
+        <li><a href="#" class="hover:text-indigo-600">Tech</a></li>
+        <li><a href="#" class="hover:text-indigo-600">Sports</a></li>
+      </ul>
+    </div>
+  </aside>
+</div>
+{% endblock %}
